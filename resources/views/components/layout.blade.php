@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>Laravel</title>
 
@@ -22,7 +23,7 @@
     </head>
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
-    <body class="m-5">
+    <body class="m-4">
         {{ $slot }}
     </body>
 </html>

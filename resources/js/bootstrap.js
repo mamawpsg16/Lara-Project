@@ -7,6 +7,74 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'datatables.net-bs5'
 // import 'datatables.net-dt/css/jquery.datatables.min.css'
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css'
+import Swal from 'sweetalert2'
+window.Swal = Swal;
+
+
+
+window.sweetAlertAjaxToken = function(message, access_token, post_data, method, url, success_callback, error_callback, submitStatus)
+{
+    new Swal({
+        title: "Confirm Action",
+        text: message,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33'
+    })
+    .then((willSave) => {
+        if (willSave) {
+            $.ajax({
+                type: method,
+                url: url,
+                data: post_data,
+                cache: false,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    "Content-Type": "application/x-www-form-urlencoded"
+                    // "Authorization": "Bearer "+access_token
+                },
+                success: function (response) {
+                    success_callback(response);
+                },
+                error: function (response) {
+                    console.log('SHIT ERROR');
+                    error_callback(response);
+                },
+                complete : function() {
+                    // $('.loader').hide();
+                    // $('form :input').removeAttr('disabled', 'disabled');
+                }
+            });
+        } else {
+            new Swal("Aborted!");
+        }
+    });
+}
+
+window.sweetAlertAjaxGet  = function(method, url, success_callback, error_callback){
+    $.ajax({
+        type: method,
+        url: url,
+        cache: false,
+        dataType: 'json',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            "Content-Type": "application/x-www-form-urlencoded"
+            // "Authorization": "Bearer "+access_token
+        },
+        success: function (response) {
+            console.log('SUCCESS');
+            success_callback(response);
+        },
+        error: function (response) {
+            console.log('SHIT ERROR');
+            error_callback(response);
+        },
+    });
+}
 
 
 
